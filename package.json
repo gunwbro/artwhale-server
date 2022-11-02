@@ -26,9 +26,13 @@
     "@nestjs/core": "^9.1.4",
     "@nestjs/platform-express": "^9.1.4",
     "@nestjs/swagger": "^6.1.2",
+    "@nestjs/typeorm": "^9.0.1",
+    "mariadb": "^3.0.2",
+    "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.5.7"
+    "rxjs": "^7.5.7",
+    "typeorm": "^0.3.10"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.1.4",
