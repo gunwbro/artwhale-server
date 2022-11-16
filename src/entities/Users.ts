@@ -12,8 +12,8 @@ export class Users {
   @Column('varchar', { name: 'nickname', nullable: true, length: 255 })
   nickname: string | null;
 
-  @Column('varchar', { name: 'oauth2_id', nullable: true, length: 255 })
-  oauth2Id: string | null;
+  @Column('text', { name: 'email' })
+  email: string;
 
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;

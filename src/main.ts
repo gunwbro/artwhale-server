@@ -8,6 +8,11 @@ async function bootstrap() {
   app.enableCors();
   const swaggerConfig = new DocumentBuilder()
     .setTitle('ArtWhale API 문서')
+    .setVersion('0.1')
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      'Authorization',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api-docs', app, document);
