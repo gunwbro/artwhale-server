@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Users } from './Users';
 import { Files } from './Files';
-import { UsersAlbumArtsLike } from './UsersAlbumArtsLike';
+import { UsersAlbumArtsLikes } from './UsersAlbumArtsLikes';
 import { Musics } from './Musics';
 
 @Index('user_id', ['userId'], {})
@@ -55,10 +55,10 @@ export class AlbumArts {
   file: Files;
 
   @OneToMany(
-    () => UsersAlbumArtsLike,
-    (usersAlbumArtsLike) => usersAlbumArtsLike.albumArt,
+    () => UsersAlbumArtsLikes,
+    (usersAlbumArtsLikes) => usersAlbumArtsLikes.albumArt,
   )
-  usersAlbumArtsLikes: UsersAlbumArtsLike[];
+  usersAlbumArtsLikes: UsersAlbumArtsLikes[];
 
   @OneToMany(() => Musics, (musics) => musics.albumArt)
   musics: Musics[];

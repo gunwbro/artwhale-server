@@ -10,7 +10,7 @@ import {
 import { Users } from './Users';
 import { Files } from './Files';
 import { AlbumArts } from './AlbumArts';
-import { UsersMusicsLike } from './UsersMusicsLike';
+import { UsersMusicsLikes } from './UsersMusicsLikes';
 
 @Index('user_id', ['userId'], {})
 @Index('file_id', ['fileId'], {})
@@ -65,6 +65,9 @@ export class Musics {
   @JoinColumn([{ name: 'album_art_id', referencedColumnName: 'id' }])
   albumArt: AlbumArts;
 
-  @OneToMany(() => UsersMusicsLike, (usersMusicsLike) => usersMusicsLike.music)
-  usersMusicsLikes: UsersMusicsLike[];
+  @OneToMany(
+    () => UsersMusicsLikes,
+    (usersMusicsLikes) => usersMusicsLikes.music,
+  )
+  usersMusicsLikes: UsersMusicsLikes[];
 }

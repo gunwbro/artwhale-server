@@ -1,8 +1,8 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { AlbumArts } from './AlbumArts';
-import { UsersAlbumArtsLike } from './UsersAlbumArtsLike';
 import { Musics } from './Musics';
-import { UsersMusicsLike } from './UsersMusicsLike';
+import { UsersAlbumArtsLikes } from './UsersAlbumArtsLikes';
+import { UsersMusicsLikes } from './UsersMusicsLikes';
 
 @Entity('users', { schema: 'artwhale' })
 export class Users {
@@ -25,14 +25,17 @@ export class Users {
   albumArts: AlbumArts[];
 
   @OneToMany(
-    () => UsersAlbumArtsLike,
-    (usersAlbumArtsLike) => usersAlbumArtsLike.user,
+    () => UsersAlbumArtsLikes,
+    (usersAlbumArtsLikes) => usersAlbumArtsLikes.user,
   )
-  usersAlbumArtsLikes: UsersAlbumArtsLike[];
+  usersAlbumArtsLikes: UsersAlbumArtsLikes[];
 
   @OneToMany(() => Musics, (musics) => musics.user)
   musics: Musics[];
 
-  @OneToMany(() => UsersMusicsLike, (usersMusicsLike) => usersMusicsLike.user)
-  usersMusicsLikes: UsersMusicsLike[];
+  @OneToMany(
+    () => UsersMusicsLikes,
+    (usersMusicsLikes) => usersMusicsLikes.user,
+  )
+  usersMusicsLikes: UsersMusicsLikes[];
 }

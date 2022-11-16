@@ -7,35 +7,35 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Users } from './Users';
-import { AlbumArts } from './AlbumArts';
+import { Musics } from './Musics';
 
 @Index('user_id', ['userId'], {})
-@Index('album_art_id', ['albumArtId'], {})
-@Entity('users_album_arts_like', { schema: 'artwhale' })
-export class UsersAlbumArtsLike {
+@Index('music_id', ['musicId'], {})
+@Entity('users_musics_like', { schema: 'artwhale' })
+export class UsersMusicsLikes {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
   @Column('int', { name: 'user_id', nullable: true })
   userId: number | null;
 
-  @Column('int', { name: 'album_art_id', nullable: true })
-  albumArtId: number | null;
+  @Column('int', { name: 'music_id', nullable: true })
+  musicId: number | null;
 
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;
 
-  @ManyToOne(() => Users, (users) => users.usersAlbumArtsLikes, {
+  @ManyToOne(() => Users, (users) => users.usersMusicsLikes, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: Users;
 
-  @ManyToOne(() => AlbumArts, (albumArts) => albumArts.usersAlbumArtsLikes, {
+  @ManyToOne(() => Musics, (musics) => musics.usersMusicsLikes, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn([{ name: 'album_art_id', referencedColumnName: 'id' }])
-  albumArt: AlbumArts;
+  @JoinColumn([{ name: 'music_id', referencedColumnName: 'id' }])
+  music: Musics;
 }
