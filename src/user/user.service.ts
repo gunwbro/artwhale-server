@@ -8,10 +8,7 @@ export class UserService {
   constructor(private dataSource: DataSource) {}
 
   getUsers() {
-    return this.dataSource
-      .getRepository(Users)
-      .createQueryBuilder('user')
-      .getMany();
+    return this.dataSource.getRepository(Users).createQueryBuilder().getMany();
   }
 
   getUserByEmail(email: string) {

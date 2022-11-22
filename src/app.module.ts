@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+import { NoticeModule } from './notice/notice.module';
 import ormConfig from '../ormconfig.json';
 
 @Module({
@@ -13,6 +14,7 @@ import ormConfig from '../ormconfig.json';
     TypeOrmModule.forRoot(ormConfig as TypeOrmModuleOptions),
     AuthModule,
     UserModule,
+    NoticeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

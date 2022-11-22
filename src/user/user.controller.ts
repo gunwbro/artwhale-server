@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserDto } from './dto/user.dto';
+import { GetUserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 
 @Controller('api/user')
@@ -13,7 +13,7 @@ export class UserController {
   @ApiResponse({
     status: 200,
     description: 'success',
-    type: UserDto,
+    type: GetUserDto,
   })
   getUsers() {
     return this.userService.getUsers();
