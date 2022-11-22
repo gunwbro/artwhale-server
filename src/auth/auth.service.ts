@@ -3,6 +3,7 @@ import { Users } from 'src/entities/Users';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserDto } from 'src/user/dto/user.dto';
+import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 
 @Injectable()
 export class AuthService {
@@ -41,7 +42,10 @@ export class AuthService {
 
     console.log(user);
     if (user) {
-      throw new HttpException('ALREADY_EXISTS', 403);
+      throw new HttpException(
+        ErrorMessage.ALREADY_EXISTS,
+        ErrorCode[ErrorMessage.ALREADY_EXISTS],
+      );
     }
 
     const payload = { nickname, sub: email };

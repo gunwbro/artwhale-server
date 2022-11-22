@@ -1,11 +1,7 @@
-import {
-  ExecutionContext,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { ExecutionContext, HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
+import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
@@ -22,7 +18,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const { authorization } = request.headers;
 
     if (authorization === undefined) {
-      throw new HttpException('NO_TOKEN', HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        ErrorMessage.NO_TOKEN,
+        ErrorCode[ErrorMessage.NO_TOKEN],
+      );
     }
 
     const token = authorization.replace('Bearer ', '');
@@ -47,13 +46,25 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     } catch (e) {
       switch (e.message) {
         case 'invalid token':
-          throw new HttpException('INVALID_TOKEN', 401);
+          throw new HttpException(
+            ErrorMessage.INVALID_TOKEN,
+            ErrorCode[ErrorMessage.INVALID_TOKEN],
+          );
         case 'jwt malformed':
-          throw new HttpException('MALFORMED_TOKEN', 401);
+          throw new HttpException(
+            ErrorMessage.MALFORMED_TOKEN,
+            ErrorCode[ErrorMessage.MALFORMED_TOKEN],
+          );
         case 'jwt expired':
-          throw new HttpException('EXPIRED_TOKEN', 410);
+          throw new HttpException(
+            ErrorMessage.EXPIRED_TOKEN,
+            ErrorCode[ErrorMessage.EXPIRED_TOKEN],
+          );
         default:
-          throw new HttpException('TOKEN_ERR', 401);
+          throw new HttpException(
+            ErrorMessage.TOKEN_ERR,
+            ErrorCode[ErrorMessage.TOKEN_ERR],
+          );
       }
     }
   }
