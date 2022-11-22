@@ -7,14 +7,14 @@ interface INotice {
 }
 export class NoticeDto implements INotice {
   @ApiProperty({
-    example: '홍길동',
-    description: '닉네임',
+    example: '공지사항 1',
+    description: '공지사항 제목',
   })
   title: string;
 
   @ApiProperty({
-    example: 'shit@google.com',
-    description: '이메일',
+    example: '공지합니다.',
+    description: '내용',
   })
   content: string;
 }

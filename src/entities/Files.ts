@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { AlbumArts } from './AlbumArts';
 import { Musics } from './Musics';
+import { Users } from './Users';
 
 @Entity('files', { schema: 'artwhale' })
 export class Files {
@@ -34,4 +35,7 @@ export class Files {
 
   @OneToMany(() => Musics, (musics) => musics.file)
   musics: Musics[];
+
+  @OneToMany(() => Users, (users) => users.file)
+  users: Users[];
 }

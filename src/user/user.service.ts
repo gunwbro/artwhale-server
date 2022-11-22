@@ -20,15 +20,13 @@ export class UserService {
   }
 
   createUser(data: UserDto) {
-    const { email, nickname } = data;
     return this.dataSource
       .createQueryBuilder()
       .insert()
       .into(Users)
       .values([
         {
-          email,
-          nickname,
+          ...data,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
