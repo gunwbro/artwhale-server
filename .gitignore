@@ -39,3 +39,6 @@ lerna-debug.log*
 
 # DB 설정 파일
 ormconfig.json
+
+# DB 데이터 파일
+/mariadb/data

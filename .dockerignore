@@ -1,0 +1,6 @@
+node_module
+dist
+Dockerfile
+.dockerignore
+mariadb
+docker-compose.yml

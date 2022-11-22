@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  mariadb:
+    container_name: docker-mariadb
+    image: mariadb:10
+    restart: always
+    volumes:
+      - ./mariadb/data:/var/lib/mysql
+      - ./mariadb/conf.d:/etc/mysql/conf.d
+      - ./mariadb/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+    env_file: .env
+    environment:
+      TZ: Asia/Seoul
+  restapi:
+    container_name: docker-artwhale
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    ports:
+      - '80:3000'
