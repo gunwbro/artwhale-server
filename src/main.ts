@@ -18,6 +18,7 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(process.env.PORT || 3000);
-  console.log('Server listening on port ' + (process.env.PORT || 3000));
+  console.log('Node Environment: ' + process.env.NODE_ENV);
+  console.log('Server Port: ' + (process.env.PORT || 3000));
 }
 bootstrap();

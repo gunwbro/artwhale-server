@@ -25,7 +25,7 @@ export class UserController {
     return this.userService.getUsers();
   }
 
-  @Get()
+  @Get('info')
   @ApiOperation({ summary: '내 정보 확인' })
   @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)
