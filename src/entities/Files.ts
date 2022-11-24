@@ -1,6 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { AlbumArts } from './AlbumArts';
 import { Musics } from './Musics';
+import { Notices } from './Notices';
 import { Users } from './Users';
 
 @Entity('files', { schema: 'artwhale' })
@@ -30,12 +31,15 @@ export class Files {
   @Column('datetime', { name: 'updated_at', nullable: true })
   updatedAt: Date | null;
 
-  @OneToMany(() => AlbumArts, (albumArts) => albumArts.file)
-  albumArts: AlbumArts[];
+  @OneToOne(() => AlbumArts, (albumArts) => albumArts.file)
+  albumArt: AlbumArts;
 
-  @OneToMany(() => Musics, (musics) => musics.file)
-  musics: Musics[];
+  @OneToOne(() => Musics, (musics) => musics.file)
+  music: Musics;
 
-  @OneToMany(() => Users, (users) => users.file)
-  users: Users[];
+  @OneToOne(() => Users, (users) => users.file)
+  user: Users;
+
+  @OneToOne(() => Notices, (notices) => notices.file)
+  notice: Users;
 }

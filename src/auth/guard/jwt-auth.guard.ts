@@ -1,8 +1,15 @@
 import { ExecutionContext, HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 import { UserService } from 'src/user/user.service';
+
+export interface JwtRequest extends Request {
+  user: {
+    sub: string;
+  };
+}
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -40,7 +47,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       const email = verify.sub;
       const user = await this.userService.getUserByEmail(email);
 
-      console.log(user);
+      if (!user) {
+        throw new HttpException(
+          ErrorMessage.NO_USER,
+          ErrorCode[ErrorMessage.NO_USER],
+        );
+      }
 
       return verify;
     } catch (e) {

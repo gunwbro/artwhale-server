@@ -40,7 +40,6 @@ export class AuthService {
 
     const user = await this.userService.getUserByEmail(email);
 
-    console.log(user);
     if (user) {
       throw new HttpException(
         ErrorMessage.ALREADY_EXISTS,

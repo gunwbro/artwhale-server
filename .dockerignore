@@ -4,3 +4,4 @@ Dockerfile
 .dockerignore
 mariadb
 docker-compose.yml
+log

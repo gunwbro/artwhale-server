@@ -14,7 +14,8 @@ export class UserService {
   getUserByEmail(email: string) {
     return this.dataSource
       .getRepository(Users)
-      .createQueryBuilder()
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.file', 'file')
       .where('email=:email', { email })
       .getOne();
   }

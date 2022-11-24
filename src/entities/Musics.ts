@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Users } from './Users';
@@ -29,6 +30,8 @@ export class Musics {
   @Column('varchar', { name: 'mood', nullable: true, length: 255 })
   mood: string | null;
 
+  @Column('int', { name: 'duration' })
+  duration: number;
   @Column('int', { name: 'user_id', nullable: true })
   userId: number | null;
 
@@ -51,14 +54,14 @@ export class Musics {
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: Users;
 
-  @ManyToOne(() => Files, (files) => files.musics, {
+  @OneToOne(() => Files, (files) => files.music, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'file_id', referencedColumnName: 'id' }])
   file: Files;
 
-  @ManyToOne(() => AlbumArts, (albumArts) => albumArts.musics, {
+  @OneToOne(() => AlbumArts, (albumArts) => albumArts.musics, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })

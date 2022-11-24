@@ -2,8 +2,8 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AlbumArts } from './AlbumArts';
@@ -23,7 +23,7 @@ export class Users {
   @Column('text', { name: 'email' })
   email: string;
 
-  @ManyToOne(() => Files, (files) => files.users, {
+  @OneToOne(() => Files, (files) => files.user, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })

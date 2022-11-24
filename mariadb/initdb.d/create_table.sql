@@ -12,6 +12,7 @@ CREATE TABLE `musics` (
   `title` varchar(255),
   `lyrics` text,
   `mood` varchar(255),
+  `duration` int,
   `user_id` int,
   `file_id` int,
   `album_art_id` int,
@@ -44,6 +45,7 @@ CREATE TABLE `notices` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `title` text,
   `content` text,
+  `file_id` int,
   `created_at` datetime,
   `updated_at` datetime
 );
@@ -81,3 +83,5 @@ ALTER TABLE `users_album_arts_likes` ADD FOREIGN KEY (`user_id`) REFERENCES `use
 ALTER TABLE `users_album_arts_likes` ADD FOREIGN KEY (`album_art_id`) REFERENCES `album_arts` (`id`) on update cascade on delete cascade;
 
 ALTER TABLE `users` ADD FOREIGN KEY (`file_id`) REFERENCES `files` (`id`) on update cascade on delete cascade;
+
+ALTER TABLE `notices` ADD FOREIGN KEY (`file_id`) REFERENCES `files` (`id`) on update cascade on delete cascade;

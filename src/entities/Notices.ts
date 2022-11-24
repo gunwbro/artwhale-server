@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Files } from './Files';
 
 @Entity('notices', { schema: 'artwhale' })
 export class Notices {
@@ -10,6 +17,13 @@ export class Notices {
 
   @Column('text', { name: 'content', nullable: true })
   content: string | null;
+
+  @OneToOne(() => Files, (files) => files.notice, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn([{ name: 'file_id', referencedColumnName: 'id' }])
+  file: Files;
 
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;

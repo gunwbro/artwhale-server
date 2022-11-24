@@ -47,7 +47,7 @@ export class AlbumArts {
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
   user: Users;
 
-  @ManyToOne(() => Files, (files) => files.albumArts, {
+  @ManyToOne(() => Files, (files) => files.albumArt, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
