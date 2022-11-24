@@ -60,7 +60,7 @@ export class UserService {
           .values([
             {
               originalName: file.filename,
-              path: '/public/profile/' + encodeURIComponent(file.filename),
+              path: '/profile/' + encodeURIComponent(file.filename),
               size: file.size,
               fileType: 'profile',
               createdAt: new Date(),
@@ -102,7 +102,7 @@ export class UserService {
       .update(Files)
       .set({
         originalName: file.filename,
-        path: '/public/profile/' + encodeURIComponent(file.filename),
+        path: '/profile/' + encodeURIComponent(file.filename),
         size: file.size,
         updatedAt: new Date(),
       })

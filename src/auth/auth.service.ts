@@ -29,9 +29,8 @@ export class AuthService {
     });
 
     return {
-      nickname: user.nickname,
-      email: user.email,
       access_token,
+      user,
     };
   }
 
