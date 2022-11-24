@@ -12,7 +12,7 @@ import winston from 'winston';
 import { CoreModule } from './common/core.module';
 
 const timezoned = () => {
-  return new Date().toLocaleString('ko-KR');
+  return new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
 };
 
 @Module({
