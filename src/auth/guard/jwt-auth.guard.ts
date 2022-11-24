@@ -1,7 +1,13 @@
-import { ExecutionContext, HttpException, Injectable } from '@nestjs/common';
+import {
+  ExecutionContext,
+  HttpException,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
+import { WinstonLogger, WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 import { UserService } from 'src/user/user.service';
 
@@ -16,6 +22,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: WinstonLogger,
   ) {
     super();
   }
@@ -56,6 +63,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
       return verify;
     } catch (e) {
+      this.logger.error(e);
       switch (e.message) {
         case 'invalid token':
           throw new HttpException(

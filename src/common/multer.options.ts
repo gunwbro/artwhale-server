@@ -1,0 +1,46 @@
+import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
+import { existsSync, mkdirSync, unlink } from 'fs';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import { JwtRequest } from 'src/auth/guard/jwt-auth.guard';
+
+function getFilesWithExtensions(path, name) {
+  const fileNameWithPath = path + '/' + name;
+  return [
+    fileNameWithPath + '.jpg',
+    fileNameWithPath + '.jpeg',
+    fileNameWithPath + '.png',
+  ];
+}
+
+export const multerUserProfileOptions: MulterOptions = {
+  storage: diskStorage({
+    destination: (request: JwtRequest, file, callback) => {
+      const uploadPath = 'public/profile';
+      const { sub } = request.user;
+      const files = getFilesWithExtensions(uploadPath, sub);
+
+      if (!existsSync(uploadPath)) {
+        // image 폴더 없을 시 폴더 생성
+        mkdirSync(uploadPath, { recursive: true });
+      } else {
+        files.forEach((file) => {
+          if (existsSync(file)) {
+            unlink(file, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
+        });
+      }
+
+      callback(null, uploadPath);
+    },
+
+    filename: (request: JwtRequest, file, callback) => {
+      const { sub } = request.user;
+      callback(null, sub + extname(file.originalname));
+    },
+  }),
+};

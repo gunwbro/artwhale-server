@@ -8,6 +8,7 @@ export const ErrorMessage = {
   EXPIRED_TOKEN: 'EXPIRED_TOKEN',
   TOKEN_ERR: 'TOKEN_ERR',
   ALREADY_EXISTS: 'ALREADY_EXISTS',
+  SERVER_ERR: 'SERVER_ERR',
 } as const;
 
 export type ErrorMessage = typeof ErrorMessage[keyof typeof ErrorMessage];
@@ -20,6 +21,7 @@ export const ErrorCode = {
   EXPIRED_TOKEN: HttpStatus.GONE,
   TOKEN_ERR: HttpStatus.UNAUTHORIZED,
   ALREADY_EXISTS: HttpStatus.FORBIDDEN,
+  SERVER_ERR: HttpStatus.INTERNAL_SERVER_ERROR,
 } as const;
 
 export type ErrorCode = typeof ErrorCode[keyof typeof ErrorCode];

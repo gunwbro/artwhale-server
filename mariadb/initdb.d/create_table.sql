@@ -34,7 +34,7 @@ CREATE TABLE `album_arts` (
 CREATE TABLE `files` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `original_name` varchar(255),
-  `file_type` ENUM ('music', 'album_art'),
+  `file_type` ENUM ('music', 'album_art', 'profile', 'notice'),
   `size` int,
   `path` varchar(255),
   `created_at` datetime,
@@ -82,6 +82,6 @@ ALTER TABLE `users_album_arts_likes` ADD FOREIGN KEY (`user_id`) REFERENCES `use
 
 ALTER TABLE `users_album_arts_likes` ADD FOREIGN KEY (`album_art_id`) REFERENCES `album_arts` (`id`) on update cascade on delete cascade;
 
-ALTER TABLE `users` ADD FOREIGN KEY (`file_id`) REFERENCES `files` (`id`) on update cascade on delete cascade;
+ALTER TABLE `users` ADD FOREIGN KEY (`file_id`) REFERENCES `files` (`id`);
 
-ALTER TABLE `notices` ADD FOREIGN KEY (`file_id`) REFERENCES `files` (`id`) on update cascade on delete cascade;
+ALTER TABLE `notices` ADD FOREIGN KEY (`file_id`) REFERENCES `files` (`id`);

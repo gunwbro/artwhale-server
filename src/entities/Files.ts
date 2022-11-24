@@ -15,9 +15,9 @@ export class Files {
   @Column('enum', {
     name: 'file_type',
     nullable: true,
-    enum: ['music', 'album_art'],
+    enum: ['music', 'album_art', 'profile', 'notice'],
   })
-  fileType: 'music' | 'album_art' | null;
+  fileType: 'music' | 'album_art' | 'profile' | 'notice';
 
   @Column('int', { name: 'size', nullable: true })
   size: number | null;
@@ -37,7 +37,7 @@ export class Files {
   @OneToOne(() => Musics, (musics) => musics.file)
   music: Musics;
 
-  @OneToOne(() => Users, (users) => users.file)
+  @OneToOne(() => Users, (users) => users.fileId)
   user: Users;
 
   @OneToOne(() => Notices, (notices) => notices.file)

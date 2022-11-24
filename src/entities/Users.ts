@@ -28,7 +28,7 @@ export class Users {
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'file_id', referencedColumnName: 'id' }])
-  file: Files;
+  fileId: number;
 
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;
