@@ -1,0 +1,12 @@
+{
+  "type": "mariadb",
+  "host": "localhost",
+  "port": 3308,
+  "username": "",
+  "password": "",
+  "database": "",
+  "synchronize": false,
+  "entities": ["dist/src/entities/*.js"],
+  "logging": true,
+  "bigNumberStrings": false
+}
