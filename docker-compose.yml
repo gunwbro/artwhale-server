@@ -19,6 +19,7 @@ services:
     build:
       dockerfile: ./Dockerfile
       context: .
+    image: artwhale-image
     volumes:
       - ./log:/artwhale-server/log
     ports:
