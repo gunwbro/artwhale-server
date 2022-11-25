@@ -3,11 +3,12 @@ import {
   HttpException,
   Inject,
   Injectable,
+  Logger,
+  LoggerService,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { WinstonLogger, WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 import { UserService } from 'src/user/user.service';
 
@@ -22,7 +23,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
-    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: WinstonLogger,
+    @Inject(Logger) private readonly logger: LoggerService,
   ) {
     super();
   }

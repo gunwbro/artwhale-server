@@ -37,6 +37,20 @@ export class UserService {
       .execute();
   }
 
+  async patchUserNickname(email: string, nickname: string) {
+    await this.dataSource
+      .createQueryBuilder()
+      .update(Users)
+      .set({
+        nickname,
+        updatedAt: new Date(),
+      })
+      .where('email=:email', { email })
+      .execute();
+
+    return true;
+  }
+
   async patchUserImage(email: string, file: Express.Multer.File) {
     const img = await this.dataSource
       .getRepository(Files)
@@ -45,7 +59,6 @@ export class UserService {
       .where('user.email=:email', { email })
       .getOne();
 
-    console.log(img);
     if (!img) {
       let isSuccess = true;
       const queryRunner = this.dataSource.createQueryRunner();
@@ -78,10 +91,8 @@ export class UserService {
           })
           .where('email=:email', { email })
           .execute();
-        console.log('dd');
         await queryRunner.commitTransaction();
       } catch (err) {
-        console.log(err);
         await queryRunner.rollbackTransaction();
         isSuccess = false;
       } finally {

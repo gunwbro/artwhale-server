@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   FileTypeValidator,
   Get,
@@ -20,8 +21,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtAuthGuard, JwtRequest } from 'src/auth/guard/jwt-auth.guard';
-import { multerUserProfileOptions } from 'src/common/multer.options';
+import { multerUserProfileOptions } from 'src/config/multer.options';
 import ImageDto from './dto/image.dto';
+import NicknameDto from './dto/nickname.dto';
 import { GetUserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 
@@ -52,6 +54,23 @@ export class UserController {
   })
   getUserById(@Req() req: JwtRequest) {
     return this.userService.getUserByEmail(req.user.sub);
+  }
+
+  @Patch('nickname')
+  @ApiOperation({ summary: '유저 닉네임 변경' })
+  @ApiBearerAuth('Authorization')
+  @UseGuards(JwtAuthGuard)
+  @ApiBody({
+    description: '변경할 닉네임',
+    type: NicknameDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'success',
+    type: Boolean,
+  })
+  patchUserNickname(@Req() req: JwtRequest, @Body() body: NicknameDto) {
+    return this.userService.patchUserNickname(req.user.sub, body.nickname);
   }
 
   @Patch('image')
