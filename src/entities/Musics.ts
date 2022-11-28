@@ -32,14 +32,6 @@ export class Musics {
 
   @Column('int', { name: 'duration' })
   duration: number;
-  @Column('int', { name: 'user_id', nullable: true })
-  userId: number | null;
-
-  @Column('int', { name: 'file_id', nullable: true })
-  fileId: number | null;
-
-  @Column('int', { name: 'album_art_id', nullable: true })
-  albumArtId: number | null;
 
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;
@@ -52,25 +44,25 @@ export class Musics {
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
-  user: Users;
+  userId: number;
 
   @OneToOne(() => Files, (files) => files.music, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'file_id', referencedColumnName: 'id' }])
-  file: Files;
+  fileId: number;
 
-  @OneToOne(() => AlbumArts, (albumArts) => albumArts.musics, {
+  @ManyToOne(() => AlbumArts, (albumArts) => albumArts.musics, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'album_art_id', referencedColumnName: 'id' }])
-  albumArt: AlbumArts;
+  albumArtId: number;
 
   @OneToMany(
     () => UsersMusicsLikes,
-    (usersMusicsLikes) => usersMusicsLikes.music,
+    (usersMusicsLikes) => usersMusicsLikes.musicId,
   )
   usersMusicsLikes: UsersMusicsLikes[];
 }

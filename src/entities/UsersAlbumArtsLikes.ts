@@ -16,12 +16,6 @@ export class UsersAlbumArtsLikes {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('int', { name: 'user_id', nullable: true })
-  userId: number | null;
-
-  @Column('int', { name: 'album_art_id', nullable: true })
-  albumArtId: number | null;
-
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;
 
@@ -30,12 +24,12 @@ export class UsersAlbumArtsLikes {
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
-  user: Users;
+  userId: number;
 
   @ManyToOne(() => AlbumArts, (albumArts) => albumArts.usersAlbumArtsLikes, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'album_art_id', referencedColumnName: 'id' }])
-  albumArt: AlbumArts;
+  albumArtId: number;
 }

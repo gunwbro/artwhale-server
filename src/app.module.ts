@@ -8,6 +8,8 @@ import { UserModule } from './user/user.module';
 import { NoticeModule } from './notice/notice.module';
 import ormConfig from '../ormconfig.json';
 import { CoreModule } from './core.module';
+import { MusicModule } from './music/music.module';
+import { AlbumArtModule } from './album-art/album-art.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { CoreModule } from './core.module';
     AuthModule,
     UserModule,
     NoticeModule,
+    MusicModule,
+    AlbumArtModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],

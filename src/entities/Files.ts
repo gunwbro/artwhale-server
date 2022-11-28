@@ -31,15 +31,15 @@ export class Files {
   @Column('datetime', { name: 'updated_at', nullable: true })
   updatedAt: Date | null;
 
-  @OneToOne(() => AlbumArts, (albumArts) => albumArts.file)
+  @OneToOne(() => AlbumArts, (albumArts) => albumArts.fileId)
   albumArt: AlbumArts;
 
-  @OneToOne(() => Musics, (musics) => musics.file)
+  @OneToOne(() => Musics, (musics) => musics.fileId)
   music: Musics;
 
   @OneToOne(() => Users, (users) => users.fileId)
   user: Users;
 
-  @OneToOne(() => Notices, (notices) => notices.file)
+  @OneToOne(() => Notices, (notices) => notices.fileId)
   notice: Users;
 }

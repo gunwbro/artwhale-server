@@ -36,21 +36,21 @@ export class Users {
   @Column('datetime', { name: 'updated_at', nullable: true })
   updatedAt: Date | null;
 
-  @OneToMany(() => AlbumArts, (albumArts) => albumArts.user)
+  @OneToMany(() => AlbumArts, (albumArts) => albumArts.userId)
   albumArts: AlbumArts[];
 
   @OneToMany(
     () => UsersAlbumArtsLikes,
-    (usersAlbumArtsLikes) => usersAlbumArtsLikes.user,
+    (usersAlbumArtsLikes) => usersAlbumArtsLikes.userId,
   )
   usersAlbumArtsLikes: UsersAlbumArtsLikes[];
 
-  @OneToMany(() => Musics, (musics) => musics.user)
+  @OneToMany(() => Musics, (musics) => musics.userId)
   musics: Musics[];
 
   @OneToMany(
     () => UsersMusicsLikes,
-    (usersMusicsLikes) => usersMusicsLikes.user,
+    (usersMusicsLikes) => usersMusicsLikes.userId,
   )
   usersMusicsLikes: UsersMusicsLikes[];
 }

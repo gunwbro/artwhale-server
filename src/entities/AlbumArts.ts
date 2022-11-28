@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Users } from './Users';
@@ -28,12 +29,6 @@ export class AlbumArts {
   @Column('varchar', { name: 'mood', nullable: true, length: 255 })
   mood: string | null;
 
-  @Column('int', { name: 'user_id', nullable: true })
-  userId: number | null;
-
-  @Column('int', { name: 'file_id', nullable: true })
-  fileId: number | null;
-
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;
 
@@ -45,21 +40,21 @@ export class AlbumArts {
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
-  user: Users;
+  userId: number;
 
-  @ManyToOne(() => Files, (files) => files.albumArt, {
+  @OneToOne(() => Files, (files) => files.albumArt, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'file_id', referencedColumnName: 'id' }])
-  file: Files;
+  fileId: number;
 
   @OneToMany(
     () => UsersAlbumArtsLikes,
-    (usersAlbumArtsLikes) => usersAlbumArtsLikes.albumArt,
+    (usersAlbumArtsLikes) => usersAlbumArtsLikes.albumArtId,
   )
   usersAlbumArtsLikes: UsersAlbumArtsLikes[];
 
-  @OneToMany(() => Musics, (musics) => musics.albumArt)
+  @OneToMany(() => Musics, (musics) => musics.albumArtId)
   musics: Musics[];
 }
