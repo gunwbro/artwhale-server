@@ -63,7 +63,7 @@ export class MusicService {
             originalName: filename,
             path: '/music/' + encodeURIComponent(filename),
             size,
-            fileType: 'profile',
+            fileType: 'music',
             createdAt: new Date(),
             updatedAt: new Date(),
           },
@@ -98,6 +98,7 @@ export class MusicService {
       if (!isSuccess) {
         throw new HttpException(ErrorMessage.SERVER_ERR, ErrorCode.SERVER_ERR);
       }
+
       return true;
     }
   }

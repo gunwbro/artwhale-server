@@ -15,6 +15,7 @@ import { UserService } from 'src/user/user.service';
 export interface JwtRequest extends Request {
   user: {
     sub: string;
+    id: number;
   };
 }
 

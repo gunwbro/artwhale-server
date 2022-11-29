@@ -63,3 +63,22 @@ export const multerMusicOptions: MulterOptions = {
     },
   }),
 };
+
+export const multerAlbumArtOptions: MulterOptions = {
+  storage: diskStorage({
+    destination: (request: JwtRequest, file, callback) => {
+      const uploadPath = 'public/album-art';
+
+      if (!existsSync(uploadPath)) {
+        mkdirSync(uploadPath, { recursive: true });
+      }
+
+      callback(null, uploadPath);
+    },
+
+    filename: (request: JwtRequest, file, callback) => {
+      const { sub } = request.user;
+      callback(null, sub + '-' + Date.now() + extname(file.originalname));
+    },
+  }),
+};

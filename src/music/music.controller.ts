@@ -60,6 +60,6 @@ export class MusicController {
     @UploadedFile() file: Express.Multer.File,
     @Body() body: MusicFileDto,
   ) {
-    this.musicService.createMusic(req.user.sub, file, body);
+    return this.musicService.createMusic(req.user.sub, file, body);
   }
 }
