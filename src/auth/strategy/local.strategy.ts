@@ -1,9 +1,8 @@
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import { Users } from 'src/entities/Users';
-import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -12,13 +11,14 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(email: string): Promise<Users> {
-    const user = await this.authService.validateUser(email);
+    let user = await this.authService.validateUser(email);
 
     if (!user) {
-      throw new HttpException(
-        ErrorMessage.NO_DATA,
-        ErrorCode[ErrorMessage.NO_DATA],
-      );
+      await this.authService.join({
+        nickname: email.split('@')[0],
+        email,
+      });
+      user = await this.authService.validateUser(email);
     }
 
     return user;

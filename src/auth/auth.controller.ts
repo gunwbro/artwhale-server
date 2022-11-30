@@ -42,17 +42,6 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  @ApiOperation({ summary: '회원가입' })
-  @ApiResponse({
-    status: 201,
-    description: 'success',
-    type: SuccessLoginDto,
-  })
-  @Post('join')
-  join(@Body() body: UserDto) {
-    return this.authService.join(body);
-  }
-
   @ApiOperation({ summary: 'Access Token 정보 보기' })
   @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)

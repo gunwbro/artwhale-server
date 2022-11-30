@@ -35,30 +35,6 @@ export class AuthService {
   }
 
   async join(body: UserDto) {
-    const { nickname, email } = body;
-
-    const user = await this.userService.getUserByEmail(email);
-
-    if (user) {
-      throw new HttpException(
-        ErrorMessage.ALREADY_EXISTS,
-        ErrorCode[ErrorMessage.ALREADY_EXISTS],
-      );
-    }
-
-    const payload = { nickname, sub: email, id: user.id };
-
-    const access_token = this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: process.env.EXPIRES_IN,
-    });
-
     await this.userService.createUser(body);
-
-    return {
-      nickname,
-      email,
-      access_token,
-    };
   }
 }
