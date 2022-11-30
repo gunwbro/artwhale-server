@@ -18,6 +18,7 @@ services:
     container_name: docker-artwhale
     build:
       dockerfile: ./Dockerfile
+      network: host
       context: .
     image: artwhale-image
     volumes:
