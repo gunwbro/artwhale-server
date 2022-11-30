@@ -7,7 +7,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { NoticeModule } from './notice/notice.module';
 import ormConfig from '../ormconfig.json';
-import { CoreModule } from './core.module';
+import { JwtGlobalModule } from './jwt-global.module';
 import { MusicModule } from './music/music.module';
 import { AlbumArtModule } from './album-art/album-art.module';
 
@@ -15,7 +15,7 @@ import { AlbumArtModule } from './album-art/album-art.module';
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(ormConfig as TypeOrmModuleOptions),
-    CoreModule,
+    JwtGlobalModule,
     AuthModule,
     UserModule,
     NoticeModule,

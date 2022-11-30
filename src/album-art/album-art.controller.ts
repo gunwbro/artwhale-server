@@ -2,6 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
+  Patch,
   Post,
   Req,
   UploadedFile,
@@ -18,6 +21,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtAuthGuard, JwtRequest } from 'src/auth/guard/jwt-auth.guard';
+import { IdDto } from 'src/common/dto/common.dto';
 import { multerAlbumArtOptions } from 'src/config/multer.options';
 import { AlbumArtService } from './album-art.service';
 import {
@@ -36,10 +40,28 @@ export class AlbumArtController {
   @ApiResponse({
     status: 200,
     description: 'success',
+    type: [GetAlbumArtDto],
+  })
+  @ApiBearerAuth('Authorization')
+  @UseGuards(JwtAuthGuard)
+  getAlbumArts(@Req() req: JwtRequest) {
+    return this.albumArtService.getAlbumArts(req.user.id);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'ID로 앨범 아트 조회' })
+  @ApiResponse({
+    status: 200,
+    description: 'success',
     type: GetAlbumArtDto,
   })
-  getAlbumArts() {
-    return this.albumArtService.getAlbumArts();
+  @ApiBearerAuth('Authorization')
+  @UseGuards(JwtAuthGuard)
+  getMusicById(
+    @Param('id', ParseIntPipe) albumArtId: number,
+    @Req() req: JwtRequest,
+  ) {
+    return this.albumArtService.getAlbumArtById(albumArtId, req.user.id);
   }
 
   @Post()
@@ -68,5 +90,20 @@ export class AlbumArtController {
       body,
       AlbumArtMethod.USER,
     );
+  }
+
+  @Patch('like')
+  @ApiBearerAuth('Authorization')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: '앨범 아트 좋아요 업데이트 (이미 좋아요면 좋아요 해제)',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'success',
+    type: Boolean,
+  })
+  updateAlbumArtLike(@Body() body: IdDto, @Req() req: JwtRequest) {
+    return this.albumArtService.updateAlbumArtLike(body.id, req.user.id);
   }
 }

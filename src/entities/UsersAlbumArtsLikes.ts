@@ -11,7 +11,7 @@ import { AlbumArts } from './AlbumArts';
 
 @Index('user_id', ['userId'], {})
 @Index('album_art_id', ['albumArtId'], {})
-@Entity('users_album_arts_like', { schema: 'artwhale' })
+@Entity('users_album_arts_likes', { schema: 'artwhale' })
 export class UsersAlbumArtsLikes {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;

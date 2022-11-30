@@ -2,6 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 import { AlbumArts } from 'src/entities/AlbumArts';
 import { Files } from 'src/entities/Files';
+import { UsersAlbumArtsLikes } from 'src/entities/UsersAlbumArtsLikes';
 import { DataSource } from 'typeorm';
 import { AlbumArtFileDto, AlbumArtMethod } from './dto/album-art.dto';
 
@@ -9,22 +10,54 @@ import { AlbumArtFileDto, AlbumArtMethod } from './dto/album-art.dto';
 export class AlbumArtService {
   constructor(private dataSource: DataSource) {}
 
-  getAlbumArts() {
-    return this.dataSource
+  async getAlbumArts(userId: number) {
+    const albumArts = await this.dataSource
       .getRepository(AlbumArts)
       .createQueryBuilder()
       .getMany();
+
+    const likes = await this.dataSource
+      .getRepository(UsersAlbumArtsLikes)
+      .createQueryBuilder()
+      .where('user_id=:userId', { userId })
+      .getRawMany();
+
+    const result = albumArts.map((albumArt) => {
+      return {
+        ...albumArts,
+        like:
+          likes.find(
+            (like) => like.UsersAlbumArtsLikes_album_art_id === albumArt.id,
+          ) !== undefined,
+      };
+    });
+
+    return result;
   }
 
-  getAlbumArtById(id: number) {
-    return this.dataSource
+  async getAlbumArtById(albumArtId: number, userId: number) {
+    const albumArt = await this.dataSource
       .getRepository(AlbumArts)
       .createQueryBuilder('albumArt')
       .leftJoinAndSelect('albumArt.fileId', 'file')
-      .where('albumArt.id=:id', { id })
+      .where('albumArt.id=:albumArtId', { albumArtId })
       .getOne();
+
+    const like = await this.getUserAlbumArtLike(albumArtId, userId);
+    console.log(like);
+    return { ...albumArt, like };
   }
 
+  async getUserAlbumArtLike(albumArtId: number, userId: number) {
+    return (await this.dataSource
+      .getRepository(UsersAlbumArtsLikes)
+      .createQueryBuilder()
+      .where('user_id=:userId', { userId })
+      .andWhere('album_art_id=:albumArtId', { albumArtId })
+      .getOne())
+      ? true
+      : false;
+  }
   async createAlbumArt(
     userId: number,
     file: Express.Multer.File,
@@ -84,5 +117,34 @@ export class AlbumArtService {
       }
       return true;
     }
+  }
+
+  async updateAlbumArtLike(albumArtId: number, userId: number) {
+    const albumArt = await this.getAlbumArtById(albumArtId, userId);
+
+    if (!albumArt) {
+      throw new HttpException(ErrorMessage.NO_DATA, ErrorCode.NO_DATA);
+    }
+
+    const albumArtike = await this.getUserAlbumArtLike(albumArtId, userId);
+
+    if (!albumArtike) {
+      await this.dataSource
+        .createQueryBuilder()
+        .insert()
+        .into(UsersAlbumArtsLikes)
+        .values([{ albumArtId, userId, createdAt: new Date() }])
+        .execute();
+    } else {
+      await this.dataSource
+        .createQueryBuilder()
+        .delete()
+        .from(UsersAlbumArtsLikes)
+        .where('userId=:userId', { userId })
+        .andWhere('albumArtId=:albumArtId', { albumArtId })
+        .execute();
+    }
+
+    return true;
   }
 }

@@ -7,6 +7,8 @@ import { getAudioDurationInSeconds } from 'get-audio-duration';
 import { Files } from 'src/entities/Files';
 import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 import { UserService } from 'src/user/user.service';
+import { UsersMusicsLikes } from 'src/entities/UsersMusicsLikes';
+
 @Injectable()
 export class MusicService {
   constructor(
@@ -15,27 +17,59 @@ export class MusicService {
     private userService: UserService,
   ) {}
 
-  getMusics() {
-    return this.dataSource
+  async getMusics(userId: number) {
+    const musics = await this.dataSource
       .getRepository(Musics)
       .createQueryBuilder('music')
       .leftJoinAndSelect('music.fileId', 'file')
       .leftJoinAndSelect('music.albumArtId', 'albumArt')
       .getMany();
+
+    const likes = await this.dataSource
+      .getRepository(UsersMusicsLikes)
+      .createQueryBuilder()
+      .where('user_id=:userId', { userId })
+      .getRawMany();
+
+    const result = musics.map((music) => {
+      return {
+        ...music,
+        like:
+          likes.find((like) => like.UsersMusicsLikes_music_id === music.id) !==
+          undefined,
+      };
+    });
+
+    return result;
   }
 
-  getMusicById(id: number) {
-    return this.dataSource
+  async getMusicById(musicId: number, userId: number) {
+    const music = await this.dataSource
       .getRepository(Musics)
       .createQueryBuilder('music')
       .leftJoinAndSelect('music.fileId', 'file')
       .leftJoinAndSelect('music.albumArtId', 'albumArt')
-      .where('music.id =:id', { id })
+      .where('music.id =:musicId', { musicId })
       .getOne();
+
+    const like = this.getUserMusicLike(musicId, userId);
+
+    return { ...music, like };
+  }
+
+  async getUserMusicLike(musicId: number, userId: number): Promise<boolean> {
+    return (await this.dataSource
+      .getRepository(UsersMusicsLikes)
+      .createQueryBuilder()
+      .where('user_id=:userId', { userId })
+      .andWhere('music_id=:musicId', { musicId })
+      .getOne())
+      ? true
+      : false;
   }
 
   async createMusic(
-    email: string,
+    userId: number,
     file: Express.Multer.File,
     body: MusicFileDto,
   ) {
@@ -43,11 +77,14 @@ export class MusicService {
     const { path, filename, size } = file;
     const duration = (await getAudioDurationInSeconds(path)) * 1000; // 밀리 초 변환
 
-    const albumArt = await this.albumArtService.getAlbumArtById(albumArtId);
+    const albumArt = await this.albumArtService.getAlbumArtById(
+      albumArtId,
+      userId,
+    );
     if (!albumArt) {
       throw new NotFoundException();
     }
-    const user = await this.userService.getUserByEmail(email);
+
     let isSuccess = true;
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -82,7 +119,7 @@ export class MusicService {
             albumArtId,
             duration,
             fileId: result.identifiers[0].id,
-            userId: user.id,
+            userId,
             createdAt: new Date(),
             updatedAt: new Date(),
           },
@@ -101,5 +138,32 @@ export class MusicService {
 
       return true;
     }
+  }
+  async updateMusicLike(musicId: number, userId: number) {
+    const music = await this.getMusicById(musicId, userId);
+
+    if (!music) {
+      throw new HttpException(ErrorMessage.NO_DATA, ErrorCode.NO_DATA);
+    }
+    const musicLike = this.getUserMusicLike(musicId, userId);
+
+    if (!musicLike) {
+      await this.dataSource
+        .createQueryBuilder()
+        .insert()
+        .into(UsersMusicsLikes)
+        .values([{ musicId, userId, createdAt: new Date() }])
+        .execute();
+    } else {
+      await this.dataSource
+        .createQueryBuilder()
+        .delete()
+        .from(UsersMusicsLikes)
+        .where('userId=:userId', { userId })
+        .andWhere('musicId=:musicId', { musicId })
+        .execute();
+    }
+
+    return true;
   }
 }

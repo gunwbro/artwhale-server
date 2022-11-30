@@ -58,8 +58,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
       if (!user) {
         throw new HttpException(
-          ErrorMessage.NO_USER,
-          ErrorCode[ErrorMessage.NO_USER],
+          ErrorMessage.NO_DATA,
+          ErrorCode[ErrorMessage.NO_DATA],
         );
       }
 

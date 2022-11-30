@@ -1,7 +1,7 @@
 import { HttpStatus } from '@nestjs/common';
 
 export const ErrorMessage = {
-  NO_USER: 'NO_USER', // 존재하지 않는 유저
+  NO_DATA: 'NO_DATA', // 존재하지 않는 데이터
   NO_TOKEN: 'NO_TOKEN',
   INVALID_TOKEN: 'INVALID_TOKEN',
   MALFORMED_TOKEN: 'MALFORMED_TOKEN',
@@ -14,7 +14,7 @@ export const ErrorMessage = {
 export type ErrorMessage = typeof ErrorMessage[keyof typeof ErrorMessage];
 
 export const ErrorCode = {
-  NO_USER: HttpStatus.UNAUTHORIZED,
+  NO_DATA: HttpStatus.UNAUTHORIZED,
   NO_TOKEN: HttpStatus.UNAUTHORIZED,
   INVALID_TOKEN: HttpStatus.UNAUTHORIZED,
   MALFORMED_TOKEN: HttpStatus.UNAUTHORIZED,

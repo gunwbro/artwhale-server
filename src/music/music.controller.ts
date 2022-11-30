@@ -2,6 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
+  Patch,
   Post,
   Req,
   UploadedFile,
@@ -18,6 +21,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtAuthGuard, JwtRequest } from 'src/auth/guard/jwt-auth.guard';
+import { IdDto } from 'src/common/dto/common.dto';
 import { multerMusicOptions } from 'src/config/multer.options';
 import { GetMusicDto, MusicFileDto } from './dto/music.dto';
 import { MusicService } from './music.service';
@@ -32,12 +36,28 @@ export class MusicController {
   @ApiResponse({
     status: 200,
     description: 'success',
+    type: [GetMusicDto],
+  })
+  @ApiBearerAuth('Authorization')
+  @UseGuards(JwtAuthGuard)
+  getMusics(@Req() req: JwtRequest) {
+    return this.musicService.getMusics(req.user.id);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'ID로 음원 조회' })
+  @ApiResponse({
+    status: 200,
+    description: 'success',
     type: GetMusicDto,
   })
   @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)
-  getMusics() {
-    return this.musicService.getMusics();
+  getMusicById(
+    @Param('id', ParseIntPipe) musicId: number,
+    @Req() req: JwtRequest,
+  ) {
+    return this.musicService.getMusicById(musicId, req.user.id);
   }
 
   @Post()
@@ -60,6 +80,21 @@ export class MusicController {
     @UploadedFile() file: Express.Multer.File,
     @Body() body: MusicFileDto,
   ) {
-    return this.musicService.createMusic(req.user.sub, file, body);
+    return this.musicService.createMusic(req.user.id, file, body);
+  }
+
+  @Patch('like')
+  @ApiBearerAuth('Authorization')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: '음원 좋아요 업데이트 (이미 좋아요면 좋아요 해제)',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'success',
+    type: Boolean,
+  })
+  updateMusicLike(@Body() body: IdDto, @Req() req: JwtRequest) {
+    return this.musicService.updateMusicLike(body.id, req.user.id);
   }
 }

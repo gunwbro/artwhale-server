@@ -11,7 +11,7 @@ import { Musics } from './Musics';
 
 @Index('user_id', ['userId'], {})
 @Index('music_id', ['musicId'], {})
-@Entity('users_musics_like', { schema: 'artwhale' })
+@Entity('users_musics_likes', { schema: 'artwhale' })
 export class UsersMusicsLikes {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;

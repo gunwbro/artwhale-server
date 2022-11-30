@@ -13,6 +13,15 @@ export class UserService {
     return this.dataSource.getRepository(Users).createQueryBuilder().getMany();
   }
 
+  getUserById(userId: number) {
+    return this.dataSource
+      .getRepository(Users)
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.fileId', 'file')
+      .where('user.id=:userId', { userId })
+      .getOne();
+  }
+
   getUserByEmail(email: string) {
     return this.dataSource
       .getRepository(Users)

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateDto } from 'src/common/dto/create.dto';
+import { IdDto } from 'src/common/dto/common.dto';
 import { GetNoticeDto, NoticeDto } from './dto/notice.dto';
 import { NoticeService } from './notice.service';
 
@@ -25,7 +25,7 @@ export class NoticeController {
   @ApiResponse({
     status: 201,
     description: 'success',
-    type: CreateDto,
+    type: IdDto,
   })
   createNotice(@Body() bodyData: NoticeDto) {
     return this.noticeService.createNotice(bodyData);
