@@ -44,20 +44,30 @@ export class MusicController {
     return this.musicService.getMusics(req.user.id);
   }
 
-  @Get(':id')
-  @ApiOperation({ summary: 'ID로 음원 조회' })
+  @Get('my')
+  @ApiOperation({ summary: '내가 만든 음원 조회' })
   @ApiResponse({
     status: 200,
     description: 'success',
-    type: GetMusicDto,
+    type: [GetMusicDto],
   })
   @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)
-  getMusicById(
-    @Param('id', ParseIntPipe) musicId: number,
-    @Req() req: JwtRequest,
-  ) {
-    return this.musicService.getMusicById(musicId, req.user.id);
+  getMyMusic(@Req() req: JwtRequest) {
+    return this.musicService.getMyMusic(req.user.id);
+  }
+
+  @Get('like')
+  @ApiOperation({ summary: '좋아요 한 음원 조회' })
+  @ApiResponse({
+    status: 200,
+    description: 'success',
+    type: [GetMusicDto],
+  })
+  @ApiBearerAuth('Authorization')
+  @UseGuards(JwtAuthGuard)
+  getLikeMusic(@Req() req: JwtRequest) {
+    return this.musicService.getLikeMusic(req.user.id);
   }
 
   @Post()
@@ -96,5 +106,21 @@ export class MusicController {
   })
   updateMusicLike(@Body() body: IdDto, @Req() req: JwtRequest) {
     return this.musicService.updateMusicLike(body.id, req.user.id);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'ID로 음원 조회' })
+  @ApiResponse({
+    status: 200,
+    description: 'success',
+    type: GetMusicDto,
+  })
+  @ApiBearerAuth('Authorization')
+  @UseGuards(JwtAuthGuard)
+  getMusicById(
+    @Param('id', ParseIntPipe) musicId: number,
+    @Req() req: JwtRequest,
+  ) {
+    return this.musicService.getMusicById(musicId, req.user.id);
   }
 }

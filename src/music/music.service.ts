@@ -23,8 +23,64 @@ export class MusicService {
       .createQueryBuilder('music')
       .leftJoinAndSelect('music.fileId', 'file')
       .leftJoinAndSelect('music.albumArtId', 'albumArt')
+      .leftJoinAndSelect('albumArt.fileId', 'albumFile')
       .getMany();
 
+    return this.getMusicsWithLike(musics, userId);
+  }
+
+  async getMusicById(musicId: number, userId: number) {
+    const music = await this.dataSource
+      .getRepository(Musics)
+      .createQueryBuilder('music')
+      .leftJoinAndSelect('music.fileId', 'file')
+      .leftJoinAndSelect('music.albumArtId', 'albumArt')
+      .leftJoinAndSelect('albumArt.fileId', 'albumFile')
+      .where('music.id =:musicId', { musicId })
+      .getOne();
+
+    const like = await this.getUserMusicLike(musicId, userId);
+
+    return { ...music, like };
+  }
+
+  async getMyMusic(userId: number) {
+    const musics = await this.dataSource
+      .getRepository(Musics)
+      .createQueryBuilder('music')
+      .leftJoinAndSelect('music.fileId', 'file')
+      .leftJoinAndSelect('music.albumArtId', 'albumArt')
+      .leftJoinAndSelect('albumArt.fileId', 'albumFile')
+      .where('music.userId =:userId', { userId })
+      .getMany();
+
+    return this.getMusicsWithLike(musics, userId);
+  }
+
+  getLikeMusic(userId: number) {
+    return this.dataSource
+      .getRepository(Musics)
+      .createQueryBuilder('music')
+      .leftJoinAndSelect('music.fileId', 'file')
+      .leftJoinAndSelect('music.albumArtId', 'albumArt')
+      .leftJoinAndSelect('albumArt.fileId', 'albumFile')
+      .leftJoin('music.usersMusicsLikes', 'usersMusicsLikes')
+      .where('usersMusicsLikes.userId =:userId', { userId })
+      .getMany();
+  }
+
+  async getUserMusicLike(musicId: number, userId: number): Promise<boolean> {
+    return (await this.dataSource
+      .getRepository(UsersMusicsLikes)
+      .createQueryBuilder()
+      .where('user_id=:userId', { userId })
+      .andWhere('music_id=:musicId', { musicId })
+      .getOne())
+      ? true
+      : false;
+  }
+
+  async getMusicsWithLike(musics: Musics[], userId: number) {
     const likes = await this.dataSource
       .getRepository(UsersMusicsLikes)
       .createQueryBuilder()
@@ -41,31 +97,6 @@ export class MusicService {
     });
 
     return result;
-  }
-
-  async getMusicById(musicId: number, userId: number) {
-    const music = await this.dataSource
-      .getRepository(Musics)
-      .createQueryBuilder('music')
-      .leftJoinAndSelect('music.fileId', 'file')
-      .leftJoinAndSelect('music.albumArtId', 'albumArt')
-      .where('music.id =:musicId', { musicId })
-      .getOne();
-
-    const like = this.getUserMusicLike(musicId, userId);
-
-    return { ...music, like };
-  }
-
-  async getUserMusicLike(musicId: number, userId: number): Promise<boolean> {
-    return (await this.dataSource
-      .getRepository(UsersMusicsLikes)
-      .createQueryBuilder()
-      .where('user_id=:userId', { userId })
-      .andWhere('music_id=:musicId', { musicId })
-      .getOne())
-      ? true
-      : false;
   }
 
   async createMusic(
@@ -145,9 +176,8 @@ export class MusicService {
     if (!music) {
       throw new HttpException(ErrorMessage.NO_DATA, ErrorCode.NO_DATA);
     }
-    const musicLike = this.getUserMusicLike(musicId, userId);
 
-    if (!musicLike) {
+    if (!music.like) {
       await this.dataSource
         .createQueryBuilder()
         .insert()

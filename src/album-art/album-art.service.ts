@@ -13,26 +13,11 @@ export class AlbumArtService {
   async getAlbumArts(userId: number) {
     const albumArts = await this.dataSource
       .getRepository(AlbumArts)
-      .createQueryBuilder()
+      .createQueryBuilder('albumArt')
+      .leftJoinAndSelect('albumArt.fileId', 'file')
       .getMany();
 
-    const likes = await this.dataSource
-      .getRepository(UsersAlbumArtsLikes)
-      .createQueryBuilder()
-      .where('user_id=:userId', { userId })
-      .getRawMany();
-
-    const result = albumArts.map((albumArt) => {
-      return {
-        ...albumArts,
-        like:
-          likes.find(
-            (like) => like.UsersAlbumArtsLikes_album_art_id === albumArt.id,
-          ) !== undefined,
-      };
-    });
-
-    return result;
+    return this.getAlbumArtsWithLike(albumArts, userId);
   }
 
   async getAlbumArtById(albumArtId: number, userId: number) {
@@ -44,8 +29,29 @@ export class AlbumArtService {
       .getOne();
 
     const like = await this.getUserAlbumArtLike(albumArtId, userId);
-    console.log(like);
+
     return { ...albumArt, like };
+  }
+
+  async getMyAlbumArt(userId: number) {
+    const albumArt = await this.dataSource
+      .getRepository(AlbumArts)
+      .createQueryBuilder('albumArt')
+      .leftJoinAndSelect('albumArt.fileId', 'file')
+      .where('albumArt.user_id =:userId', { userId })
+      .getMany();
+
+    return this.getAlbumArtsWithLike(albumArt, userId);
+  }
+
+  getLikeAlbumArt(userId: number) {
+    return this.dataSource
+      .getRepository(AlbumArts)
+      .createQueryBuilder('albumArt')
+      .leftJoinAndSelect('albumArt.fileId', 'file')
+      .leftJoin('albumArt.usersAlbumArtsLikes', 'usersAlbumArtsLikes')
+      .where('usersAlbumArtsLikes.userId =:userId', { userId })
+      .getMany();
   }
 
   async getUserAlbumArtLike(albumArtId: number, userId: number) {
@@ -58,6 +64,27 @@ export class AlbumArtService {
       ? true
       : false;
   }
+
+  async getAlbumArtsWithLike(albumArts: AlbumArts[], userId: number) {
+    const likes = await this.dataSource
+      .getRepository(UsersAlbumArtsLikes)
+      .createQueryBuilder()
+      .where('user_id=:userId', { userId })
+      .getRawMany();
+
+    const result = albumArts.map((albumArt) => {
+      return {
+        ...albumArt,
+        like:
+          likes.find(
+            (like) => like.UsersAlbumArtsLikes_album_art_id === albumArt.id,
+          ) !== undefined,
+      };
+    });
+
+    return result;
+  }
+
   async createAlbumArt(
     userId: number,
     file: Express.Multer.File,

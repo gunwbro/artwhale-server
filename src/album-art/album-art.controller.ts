@@ -48,20 +48,17 @@ export class AlbumArtController {
     return this.albumArtService.getAlbumArts(req.user.id);
   }
 
-  @Get(':id')
-  @ApiOperation({ summary: 'ID로 앨범 아트 조회' })
+  @Get('my')
+  @ApiOperation({ summary: '내가 만든 앨범 아트 조회' })
   @ApiResponse({
     status: 200,
     description: 'success',
-    type: GetAlbumArtDto,
+    type: [GetAlbumArtDto],
   })
   @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)
-  getMusicById(
-    @Param('id', ParseIntPipe) albumArtId: number,
-    @Req() req: JwtRequest,
-  ) {
-    return this.albumArtService.getAlbumArtById(albumArtId, req.user.id);
+  getMyAlbumArt(@Req() req: JwtRequest) {
+    return this.albumArtService.getMyAlbumArt(req.user.id);
   }
 
   @Post()
@@ -92,6 +89,19 @@ export class AlbumArtController {
     );
   }
 
+  @Get('like')
+  @ApiOperation({ summary: '좋아요 한 앨범 아트 조회' })
+  @ApiResponse({
+    status: 200,
+    description: 'success',
+    type: [GetAlbumArtDto],
+  })
+  @ApiBearerAuth('Authorization')
+  @UseGuards(JwtAuthGuard)
+  getLikeMusic(@Req() req: JwtRequest) {
+    return this.albumArtService.getLikeAlbumArt(req.user.id);
+  }
+
   @Patch('like')
   @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)
@@ -105,5 +115,21 @@ export class AlbumArtController {
   })
   updateAlbumArtLike(@Body() body: IdDto, @Req() req: JwtRequest) {
     return this.albumArtService.updateAlbumArtLike(body.id, req.user.id);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'ID로 앨범 아트 조회' })
+  @ApiResponse({
+    status: 200,
+    description: 'success',
+    type: GetAlbumArtDto,
+  })
+  @ApiBearerAuth('Authorization')
+  @UseGuards(JwtAuthGuard)
+  getMusicById(
+    @Param('id', ParseIntPipe) albumArtId: number,
+    @Req() req: JwtRequest,
+  ) {
+    return this.albumArtService.getAlbumArtById(albumArtId, req.user.id);
   }
 }
