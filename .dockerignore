@@ -5,3 +5,6 @@ Dockerfile
 mariadb
 docker-compose.yml
 log
+public
+ormlogs.log
+README.md
