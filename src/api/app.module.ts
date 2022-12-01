@@ -9,7 +9,7 @@ import { NoticeModule } from './notice/notice.module';
 import ormConfig from '../../ormconfig.json';
 import { JwtGlobalModule } from './auth/jwt-global.module';
 import { MusicModule } from './music/music.module';
-import { AlbumArtModule } from '../album-art/album-art.module';
+import { AlbumArtModule } from './album-art/album-art.module';
 import { MorganModule, MorganInterceptor } from 'nest-morgan';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 

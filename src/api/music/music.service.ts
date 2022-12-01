@@ -1,5 +1,5 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
-import { AlbumArtService } from 'src/album-art/album-art.service';
+import { AlbumArtService } from 'src/api/album-art/album-art.service';
 import { Musics } from 'src/entities/Musics';
 import { DataSource } from 'typeorm';
 import { MusicFileDto } from './dto/music.dto';

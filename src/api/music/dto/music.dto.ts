@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { GetAlbumArtDto } from 'src/album-art/dto/album-art.dto';
+import { GetAlbumArtDto } from 'src/api/album-art/dto/album-art.dto';
 import { FileDto } from 'src/common/dto/file.dto';
 import { GetDto } from 'src/common/dto/get.dto';
 
