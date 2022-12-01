@@ -11,6 +11,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 import { UserService } from 'src/api/user/user.service';
+import {
+  LogParameter,
+  ParseObjectToLoggerString,
+} from 'src/config/winston.config';
 
 export interface JwtRequest extends Request {
   user: {
@@ -43,6 +47,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const token = authorization.replace('Bearer ', '');
 
     request.user = await this.validateToken(token);
+
+    this.logger.log(
+      ParseObjectToLoggerString(request.user),
+      LogParameter.TOKEN_INFO,
+    );
 
     return true;
   }

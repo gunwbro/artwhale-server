@@ -39,7 +39,7 @@ export class NoticeController {
   @ApiResponse({
     status: 200,
     description: 'success',
-    type: GetNoticeDto,
+    type: [GetNoticeDto],
   })
   getNotices() {
     return this.noticeService.getNotices();

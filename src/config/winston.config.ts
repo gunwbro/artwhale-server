@@ -54,6 +54,7 @@ export const WinstonConfig = {
 export const LogParameter = {
   HTTP_REQUEST: 'Http Request',
   FILE: 'File',
+  TOKEN_INFO: 'Token Info',
 } as const;
 
 export type LogParameter = typeof LogParameter[keyof typeof LogParameter];
