@@ -30,6 +30,7 @@ async function bootstrap() {
   await app.listen(process.env.PORT || 3000);
 
   const logger = app.get<LoggerService>(Logger);
+
   logger.log('Node Environment: ' + process.env.NODE_ENV);
   logger.log('Server Port: ' + (process.env.PORT || 3000));
 }

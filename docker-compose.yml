@@ -23,5 +23,6 @@ services:
     image: artwhale-image
     volumes:
       - ./log:/artwhale-server/log
+      - ./public:/artwhale-server/public
     ports:
       - '80:3000'

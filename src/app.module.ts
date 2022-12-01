@@ -10,6 +10,8 @@ import ormConfig from '../ormconfig.json';
 import { JwtGlobalModule } from './jwt-global.module';
 import { MusicModule } from './music/music.module';
 import { AlbumArtModule } from './album-art/album-art.module';
+import { MorganModule, MorganInterceptor } from 'nest-morgan';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -21,8 +23,32 @@ import { AlbumArtModule } from './album-art/album-art.module';
     NoticeModule,
     MusicModule,
     AlbumArtModule,
+    MorganModule,
   ],
   controllers: [AppController],
-  providers: [AppService, Logger],
+  providers: [
+    AppService,
+    Logger,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: MorganInterceptor((tokens, req: any, res) => {
+        Logger.log(
+          [
+            tokens.method(req, res),
+            tokens.url(req, res),
+            tokens.status(req, res),
+            tokens.res(req, res, 'content-length'),
+            '-',
+            tokens['response-time'](req, res),
+            'ms',
+            '-',
+            JSON.stringify(req.body),
+          ].join(' '),
+          'Http Request',
+        );
+        return null;
+      }),
+    },
+  ],
 })
 export class AppModule {}
