@@ -10,6 +10,9 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  Inject,
+  Logger,
+  LoggerService,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -24,6 +27,10 @@ import { JwtAuthGuard, JwtRequest } from 'src/api/auth/guard/jwt-auth.guard';
 import { IdDto } from 'src/common/dto/common.dto';
 import { multerMusicOptions } from 'src/config/multer.options';
 import {
+  LogParameter,
+  ParseObjectToLoggerString,
+} from 'src/config/winston.config';
+import {
   GetMusicDto,
   GetMusicWithLikeDto,
   MusicFileDto,
@@ -33,7 +40,10 @@ import { MusicService } from './music.service';
 @Controller('api/music')
 @ApiTags('MUSIC')
 export class MusicController {
-  constructor(private readonly musicService: MusicService) {}
+  constructor(
+    private readonly musicService: MusicService,
+    @Inject(Logger) private readonly logger: LoggerService,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: '모든 음원 조회' })
@@ -94,6 +104,7 @@ export class MusicController {
     @UploadedFile() file: Express.Multer.File,
     @Body() body: MusicFileDto,
   ) {
+    this.logger.log(ParseObjectToLoggerString(file), LogParameter.FILE);
     return this.musicService.createMusic(req.user.id, file, body);
   }
 

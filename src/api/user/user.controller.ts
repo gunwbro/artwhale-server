@@ -10,6 +10,9 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  Inject,
+  Logger,
+  LoggerService,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -22,6 +25,10 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard, JwtRequest } from 'src/api/auth/guard/jwt-auth.guard';
 import { multerUserProfileOptions } from 'src/config/multer.options';
+import {
+  LogParameter,
+  ParseObjectToLoggerString,
+} from 'src/config/winston.config';
 import ImageDto from './dto/image.dto';
 import NicknameDto from './dto/nickname.dto';
 import { GetUserDto } from './dto/user.dto';
@@ -30,7 +37,10 @@ import { UserService } from './user.service';
 @Controller('api/user')
 @ApiTags('USER')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    @Inject(Logger) private readonly logger: LoggerService,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: '모든 유저 조회' })
@@ -100,6 +110,7 @@ export class UserController {
     )
     file: Express.Multer.File,
   ) {
+    this.logger.log(ParseObjectToLoggerString(file), LogParameter.FILE);
     return this.userService.patchUserImage(req.user.sub, file);
   }
 }

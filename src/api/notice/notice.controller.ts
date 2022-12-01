@@ -5,6 +5,9 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
+  Inject,
+  Logger,
+  LoggerService,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -16,13 +19,20 @@ import {
 } from '@nestjs/swagger';
 import { IdDto } from 'src/common/dto/common.dto';
 import { multerNoticeOptions } from 'src/config/multer.options';
+import {
+  LogParameter,
+  ParseObjectToLoggerString,
+} from 'src/config/winston.config';
 import { GetNoticeDto, NoticeFileDto } from './dto/notice.dto';
 import { NoticeService } from './notice.service';
 
 @Controller('api/notice')
 @ApiTags('NOTICE')
 export class NoticeController {
-  constructor(private readonly noticeService: NoticeService) {}
+  constructor(
+    private readonly noticeService: NoticeService,
+    @Inject(Logger) private readonly logger: LoggerService,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: '모든 공지사항 조회' })
@@ -52,6 +62,7 @@ export class NoticeController {
     @Body() bodyData: NoticeFileDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
+    this.logger.log(ParseObjectToLoggerString(image), LogParameter.FILE);
     return this.noticeService.createNotice(bodyData, image);
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Logger, LoggerService } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Mood } from '../common/mood';
@@ -7,10 +7,7 @@ import { MoodDto } from '../common/dto/mood.dto';
 @Controller()
 @ApiTags('COMMON')
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    @Inject(Logger) private readonly logger: LoggerService,
-  ) {}
+  constructor(private readonly appService: AppService) {}
 
   @Get()
   getHello(): string {

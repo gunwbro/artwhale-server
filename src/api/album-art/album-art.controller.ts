@@ -10,6 +10,9 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  Inject,
+  Logger,
+  LoggerService,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -23,6 +26,10 @@ import {
 import { JwtAuthGuard, JwtRequest } from 'src/api/auth/guard/jwt-auth.guard';
 import { IdDto } from 'src/common/dto/common.dto';
 import { multerAlbumArtOptions } from 'src/config/multer.options';
+import {
+  LogParameter,
+  ParseObjectToLoggerString,
+} from 'src/config/winston.config';
 import { AlbumArtService } from './album-art.service';
 import {
   AlbumArtFileDto,
@@ -34,7 +41,10 @@ import {
 @Controller('api/album-art')
 @ApiTags('ALBUM_ART')
 export class AlbumArtController {
-  constructor(private readonly albumArtService: AlbumArtService) {}
+  constructor(
+    private readonly albumArtService: AlbumArtService,
+    @Inject(Logger) private readonly logger: LoggerService,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: '모든 사람이 만든 앨범 아트 조회' })
@@ -82,6 +92,7 @@ export class AlbumArtController {
     @UploadedFile() file: Express.Multer.File,
     @Body() body: AlbumArtFileDto,
   ) {
+    this.logger.log(ParseObjectToLoggerString(file), LogParameter.FILE);
     return this.albumArtService.createAlbumArt(
       req.user.id,
       file,

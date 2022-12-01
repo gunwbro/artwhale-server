@@ -50,3 +50,14 @@ export const WinstonConfig = {
     }),
   ],
 };
+
+export const LogParameter = {
+  HTTP_REQUEST: 'Http Request',
+  FILE: 'File',
+} as const;
+
+export type LogParameter = typeof LogParameter[keyof typeof LogParameter];
+
+export function ParseObjectToLoggerString(object) {
+  return `Object ${JSON.stringify(object)}`;
+}
