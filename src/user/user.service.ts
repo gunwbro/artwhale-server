@@ -1,4 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
+import { FileType } from 'src/common/dto/file.dto';
 import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 import { Files } from 'src/entities/Files';
 import { Users } from 'src/entities/Users';
@@ -84,7 +85,7 @@ export class UserService {
               originalName: file.filename,
               path: '/profile/' + encodeURIComponent(file.filename),
               size: file.size,
-              fileType: 'profile',
+              fileType: FileType.PROFILE,
               createdAt: new Date(),
               updatedAt: new Date(),
             },

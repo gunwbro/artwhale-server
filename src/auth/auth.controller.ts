@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Req, Get, Body } from '@nestjs/common';
+import { Controller, UseGuards, Post, Req, Get } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -6,7 +6,6 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { UserDto } from 'src/user/dto/user.dto';
 import { AuthService } from './auth.service';
 import { SuccessLoginDto } from './dto/success.login.dto';
 import { TokenInfoDto } from './dto/token-info.dto';

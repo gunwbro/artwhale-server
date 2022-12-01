@@ -1,4 +1,5 @@
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
+import { Request } from 'express';
 import { existsSync, mkdirSync, unlink } from 'fs';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -79,6 +80,24 @@ export const multerAlbumArtOptions: MulterOptions = {
     filename: (request: JwtRequest, file, callback) => {
       const { sub } = request.user;
       callback(null, sub + '-' + Date.now() + extname(file.originalname));
+    },
+  }),
+};
+
+export const multerNoticeOptions: MulterOptions = {
+  storage: diskStorage({
+    destination: (request: JwtRequest, file, callback) => {
+      const uploadPath = 'public/notice';
+
+      if (!existsSync(uploadPath)) {
+        mkdirSync(uploadPath, { recursive: true });
+      }
+
+      callback(null, uploadPath);
+    },
+
+    filename: (request: Request, file, callback) => {
+      callback(null, Date.now() + extname(file.originalname));
     },
   }),
 };

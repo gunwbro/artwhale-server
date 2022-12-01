@@ -23,7 +23,11 @@ import {
 import { JwtAuthGuard, JwtRequest } from 'src/auth/guard/jwt-auth.guard';
 import { IdDto } from 'src/common/dto/common.dto';
 import { multerMusicOptions } from 'src/config/multer.options';
-import { GetMusicDto, MusicFileDto } from './dto/music.dto';
+import {
+  GetMusicDto,
+  GetMusicWithLikeDto,
+  MusicFileDto,
+} from './dto/music.dto';
 import { MusicService } from './music.service';
 
 @Controller('api/music')
@@ -36,7 +40,7 @@ export class MusicController {
   @ApiResponse({
     status: 200,
     description: 'success',
-    type: [GetMusicDto],
+    type: [GetMusicWithLikeDto],
   })
   @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)
@@ -49,7 +53,7 @@ export class MusicController {
   @ApiResponse({
     status: 200,
     description: 'success',
-    type: [GetMusicDto],
+    type: [GetMusicWithLikeDto],
   })
   @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)
@@ -113,7 +117,7 @@ export class MusicController {
   @ApiResponse({
     status: 200,
     description: 'success',
-    type: GetMusicDto,
+    type: GetMusicWithLikeDto,
   })
   @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)

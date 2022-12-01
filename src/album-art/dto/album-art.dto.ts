@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { FileDto } from 'src/common/dto/file.dto';
 import { GetDto } from 'src/common/dto/get.dto';
 
 interface IAlbumArt {
@@ -69,4 +70,42 @@ export class GetAlbumArtDto extends GetDto implements IAlbumArt {
     description: '감정(무드)',
   })
   mood: string;
+
+  @ApiProperty({
+    description: '파일',
+    type: FileDto,
+  })
+  fileId: FileDto;
+}
+
+export class GetAlbumArtWithLikeDto extends GetDto implements IAlbumArt {
+  @ApiProperty({
+    example: '비행기',
+    description: '제목',
+  })
+  title: string;
+
+  @ApiProperty({
+    example: 'user',
+    description: '종류',
+  })
+  method: AlbumArtMethod;
+
+  @ApiProperty({
+    example: 'happy',
+    description: '감정(무드)',
+  })
+  mood: string;
+
+  @ApiProperty({
+    description: '파일',
+    type: FileDto,
+  })
+  fileId: FileDto;
+
+  @ApiProperty({
+    example: true,
+    description: '좋아요 여부',
+  })
+  like: boolean;
 }

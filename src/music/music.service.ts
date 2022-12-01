@@ -8,6 +8,7 @@ import { Files } from 'src/entities/Files';
 import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 import { UserService } from 'src/user/user.service';
 import { UsersMusicsLikes } from 'src/entities/UsersMusicsLikes';
+import { FileType } from 'src/common/dto/file.dto';
 
 @Injectable()
 export class MusicService {
@@ -131,7 +132,7 @@ export class MusicService {
             originalName: filename,
             path: '/music/' + encodeURIComponent(filename),
             size,
-            fileType: 'music',
+            fileType: FileType.MUSIC,
             createdAt: new Date(),
             updatedAt: new Date(),
           },

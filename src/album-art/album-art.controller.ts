@@ -28,6 +28,7 @@ import {
   AlbumArtFileDto,
   AlbumArtMethod,
   GetAlbumArtDto,
+  GetAlbumArtWithLikeDto,
 } from './dto/album-art.dto';
 
 @Controller('api/album-art')
@@ -40,7 +41,7 @@ export class AlbumArtController {
   @ApiResponse({
     status: 200,
     description: 'success',
-    type: [GetAlbumArtDto],
+    type: [GetAlbumArtWithLikeDto],
   })
   @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)
@@ -53,7 +54,7 @@ export class AlbumArtController {
   @ApiResponse({
     status: 200,
     description: 'success',
-    type: [GetAlbumArtDto],
+    type: [GetAlbumArtWithLikeDto],
   })
   @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)
@@ -122,7 +123,7 @@ export class AlbumArtController {
   @ApiResponse({
     status: 200,
     description: 'success',
-    type: GetAlbumArtDto,
+    type: GetAlbumArtWithLikeDto,
   })
   @ApiBearerAuth('Authorization')
   @UseGuards(JwtAuthGuard)

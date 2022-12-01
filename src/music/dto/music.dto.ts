@@ -1,4 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { GetAlbumArtDto } from 'src/album-art/dto/album-art.dto';
+import { FileDto } from 'src/common/dto/file.dto';
 import { GetDto } from 'src/common/dto/get.dto';
 
 interface IMusic {
@@ -86,4 +88,60 @@ export class GetMusicDto extends GetDto implements IMusic {
     description: '노래 길이',
   })
   duration: number;
+
+  @ApiProperty({
+    description: '파일',
+    type: FileDto,
+  })
+  fileId: FileDto;
+
+  @ApiProperty({
+    description: '앨범 아트',
+    type: GetAlbumArtDto,
+  })
+  albumArtId: GetAlbumArtDto;
+}
+
+export class GetMusicWithLikeDto extends GetDto implements IMusic {
+  @ApiProperty({
+    example: '비행기',
+    description: '제목',
+  })
+  title: string;
+
+  @ApiProperty({
+    example: '떴다 떴다 비행기',
+    description: '가사',
+  })
+  lyrics: string;
+
+  @ApiProperty({
+    example: 'happy',
+    description: '감정(무드)',
+  })
+  mood: string;
+
+  @ApiProperty({
+    example: 4131514531,
+    description: '노래 길이',
+  })
+  duration: number;
+
+  @ApiProperty({
+    example: true,
+    description: '좋아요 여부',
+  })
+  like: boolean;
+
+  @ApiProperty({
+    description: '파일',
+    type: FileDto,
+  })
+  fileId: FileDto;
+
+  @ApiProperty({
+    description: '앨범 아트',
+    type: GetAlbumArtDto,
+  })
+  albumArtId: GetAlbumArtDto;
 }
