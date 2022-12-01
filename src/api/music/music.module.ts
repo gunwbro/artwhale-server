@@ -1,6 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
 import { AlbumArtService } from 'src/album-art/album-art.service';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/api/user/user.service';
 import { MusicController } from './music.controller';
 import { MusicService } from './music.service';
 

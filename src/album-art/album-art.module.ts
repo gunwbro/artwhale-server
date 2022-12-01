@@ -1,5 +1,5 @@
 import { Logger, Module } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/api/user/user.service';
 import { AlbumArtController } from './album-art.controller';
 import { AlbumArtService } from './album-art.service';
 

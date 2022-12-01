@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { existsSync, mkdirSync, unlink } from 'fs';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { JwtRequest } from 'src/auth/guard/jwt-auth.guard';
+import { JwtRequest } from 'src/api/auth/guard/jwt-auth.guard';
 
 function getFilesWithExtensions(path, name) {
   const fileNameWithPath = path + '/' + name;

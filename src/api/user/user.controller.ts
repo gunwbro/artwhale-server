@@ -20,7 +20,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard, JwtRequest } from 'src/auth/guard/jwt-auth.guard';
+import { JwtAuthGuard, JwtRequest } from 'src/api/auth/guard/jwt-auth.guard';
 import { multerUserProfileOptions } from 'src/config/multer.options';
 import ImageDto from './dto/image.dto';
 import NicknameDto from './dto/nickname.dto';

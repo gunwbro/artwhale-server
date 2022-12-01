@@ -20,7 +20,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard, JwtRequest } from 'src/auth/guard/jwt-auth.guard';
+import { JwtAuthGuard, JwtRequest } from 'src/api/auth/guard/jwt-auth.guard';
 import { IdDto } from 'src/common/dto/common.dto';
 import { multerMusicOptions } from 'src/config/multer.options';
 import {

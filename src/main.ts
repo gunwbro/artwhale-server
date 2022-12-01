@@ -4,7 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { WinstonModule } from 'nest-winston';
 import { join } from 'path';
-import { AppModule } from './app.module';
+import { AppModule } from './api/app.module';
 import { WinstonConfig } from './config/winston.config';
 
 async function bootstrap() {
