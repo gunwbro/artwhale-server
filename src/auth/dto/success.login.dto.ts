@@ -1,17 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { GetUserDto } from 'src/user/dto/user.dto';
 
 export class SuccessLoginDto {
   @ApiProperty({
-    example: '홍길동',
-    description: '닉네임',
+    description: '유저 정보',
+    type: GetUserDto,
   })
-  nickname: string;
-
-  @ApiProperty({
-    example: 'shit@google.com',
-    description: '이메일',
-  })
-  email: string;
+  albumArtId: GetUserDto;
 
   @ApiProperty({
     example:

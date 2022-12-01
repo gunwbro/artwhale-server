@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { FileDto } from 'src/common/dto/file.dto';
 import { GetDto } from 'src/common/dto/get.dto';
 
 interface IUser {
@@ -31,4 +32,10 @@ export class GetUserDto extends GetDto implements IUser {
     description: '이메일',
   })
   email: string;
+
+  @ApiProperty({
+    description: '파일',
+    type: FileDto,
+  })
+  fileId: FileDto;
 }

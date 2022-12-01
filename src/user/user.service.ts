@@ -11,7 +11,11 @@ export class UserService {
   constructor(private dataSource: DataSource) {}
 
   getUsers() {
-    return this.dataSource.getRepository(Users).createQueryBuilder().getMany();
+    return this.dataSource
+      .getRepository(Users)
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.fileId', 'file')
+      .getMany();
   }
 
   getUserById(userId: number) {
