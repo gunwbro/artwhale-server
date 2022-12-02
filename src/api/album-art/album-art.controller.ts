@@ -25,11 +25,8 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard, JwtRequest } from 'src/api/auth/guard/jwt-auth.guard';
 import { IdDto } from 'src/common/common.dto';
-import { multerAlbumArtOptions } from 'src/config/multer.options';
-import {
-  JsonStringifyWithPrefix,
-  LogParameter,
-} from 'src/config/winston.config';
+import { multerAlbumArtOptions } from 'src/configs/multer.options';
+import { LoggingFilePipe } from 'src/pipes/logging-file.pipe';
 import { AlbumArtService } from './album-art.service';
 import {
   AlbumArtFileDto,
@@ -89,13 +86,9 @@ export class AlbumArtController {
   })
   createAlbumArt(
     @Req() req: JwtRequest,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(LoggingFilePipe) file: Express.Multer.File,
     @Body() body: AlbumArtFileDto,
   ) {
-    this.logger.log(
-      JsonStringifyWithPrefix(file, LogParameter.FILE),
-      LogParameter.FILE,
-    );
     return this.albumArtService.createAlbumArt(
       req.user.id,
       file,

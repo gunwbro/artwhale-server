@@ -25,11 +25,8 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard, JwtRequest } from 'src/api/auth/guard/jwt-auth.guard';
 import { IdDto } from 'src/common/common.dto';
-import { multerMusicOptions } from 'src/config/multer.options';
-import {
-  JsonStringifyWithPrefix,
-  LogParameter,
-} from 'src/config/winston.config';
+import { multerMusicOptions } from 'src/configs/multer.options';
+import { LoggingFilePipe } from 'src/pipes/logging-file.pipe';
 import {
   GetMusicDto,
   GetMusicWithLikeDto,
@@ -101,13 +98,9 @@ export class MusicController {
   })
   createMusic(
     @Req() req: JwtRequest,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(LoggingFilePipe) file: Express.Multer.File,
     @Body() body: MusicFileDto,
   ) {
-    this.logger.log(
-      JsonStringifyWithPrefix(file, LogParameter.FILE),
-      LogParameter.FILE,
-    );
     return this.musicService.createMusic(req.user.id, file, body);
   }
 

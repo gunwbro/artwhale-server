@@ -12,7 +12,7 @@ import { MusicModule } from './music/music.module';
 import { AlbumArtModule } from './album-art/album-art.module';
 import { MorganModule, MorganInterceptor } from 'nest-morgan';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LogParameter } from 'src/config/winston.config';
+import { LogParameter } from 'src/configs/winston.config';
 
 @Module({
   imports: [

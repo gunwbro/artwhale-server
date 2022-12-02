@@ -24,11 +24,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtAuthGuard, JwtRequest } from 'src/api/auth/guard/jwt-auth.guard';
-import { multerUserProfileOptions } from 'src/config/multer.options';
-import {
-  JsonStringifyWithPrefix,
-  LogParameter,
-} from 'src/config/winston.config';
+import { multerUserProfileOptions } from 'src/configs/multer.options';
+import { LoggingFilePipe } from 'src/pipes/logging-file.pipe';
 import ImageDto from './dto/image.dto';
 import NicknameDto from './dto/nickname.dto';
 import { GetUserDto } from './dto/user.dto';
@@ -107,13 +104,10 @@ export class UserController {
           new FileTypeValidator({ fileType: /\/(jpg|jpeg|png)$/ }), // jpg, jpeg, png 만 가능
         ],
       }),
+      LoggingFilePipe,
     )
     file: Express.Multer.File,
   ) {
-    this.logger.log(
-      JsonStringifyWithPrefix(file, LogParameter.FILE),
-      LogParameter.FILE,
-    );
     return this.userService.patchUserImage(req.user.sub, file);
   }
 }
