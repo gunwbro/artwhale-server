@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { FileDto } from 'src/common/dto/file.dto';
-import { GetDto } from 'src/common/dto/get.dto';
+import { FileDto, GetDto } from 'src/common/common.dto';
 
 interface IAlbumArt {
   title: string;

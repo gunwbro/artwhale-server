@@ -58,6 +58,6 @@ export const LogParameter = {
 
 export type LogParameter = typeof LogParameter[keyof typeof LogParameter];
 
-export function ObjectJsonStringify(object) {
-  return `Object ${JSON.stringify(object)}`;
+export function JsonStringifyWithPrefix(object, prefix: string) {
+  return `${prefix} ${JSON.stringify(object)}`;
 }

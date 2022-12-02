@@ -5,10 +5,9 @@ import { DataSource } from 'typeorm';
 import { MusicFileDto } from './dto/music.dto';
 import { getAudioDurationInSeconds } from 'get-audio-duration';
 import { Files } from 'src/entities/Files';
-import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 import { UserService } from 'src/api/user/user.service';
 import { UsersMusicsLikes } from 'src/entities/UsersMusicsLikes';
-import { FileType } from 'src/common/dto/file.dto';
+import { ErrorCode, ErrorMessage, FileType } from 'src/common/types';
 
 @Injectable()
 export class MusicService {

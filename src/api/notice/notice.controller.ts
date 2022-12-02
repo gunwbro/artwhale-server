@@ -17,9 +17,12 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { IdDto } from 'src/common/dto/common.dto';
+import { IdDto } from 'src/common/common.dto';
 import { multerNoticeOptions } from 'src/config/multer.options';
-import { LogParameter, ObjectJsonStringify } from 'src/config/winston.config';
+import {
+  JsonStringifyWithPrefix,
+  LogParameter,
+} from 'src/config/winston.config';
 import { GetNoticeDto, NoticeFileDto } from './dto/notice.dto';
 import { NoticeService } from './notice.service';
 
@@ -59,7 +62,10 @@ export class NoticeController {
     @Body() bodyData: NoticeFileDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    this.logger.log(ObjectJsonStringify(image), LogParameter.FILE);
+    this.logger.log(
+      JsonStringifyWithPrefix(image, LogParameter.FILE),
+      LogParameter.FILE,
+    );
     return this.noticeService.createNotice(bodyData, image);
   }
 }

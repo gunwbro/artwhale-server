@@ -1,6 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { FileType } from 'src/common/dto/file.dto';
-import { ErrorCode, ErrorMessage } from 'src/common/message-code';
+import { ErrorCode, ErrorMessage, FileType } from 'src/common/types';
 import { Files } from 'src/entities/Files';
 import { Users } from 'src/entities/Users';
 import { DataSource } from 'typeorm';

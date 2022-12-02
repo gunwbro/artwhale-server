@@ -1,5 +1,14 @@
 import { HttpStatus } from '@nestjs/common';
 
+export const FileType = {
+  MUSIC: 'music',
+  ALBUM_ART: 'album_art',
+  PROFILE: 'profile',
+  NOTICE: 'notice',
+} as const;
+
+export type FileType = typeof FileType[keyof typeof FileType];
+
 export const ErrorMessage = {
   NO_DATA: 'NO_DATA', // 존재하지 않는 데이터
   NO_TOKEN: 'NO_TOKEN',

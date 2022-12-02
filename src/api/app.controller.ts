@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Mood } from '../common/mood';
-import { MoodDto } from '../common/dto/mood.dto';
+import { MoodDto } from 'src/common/common.dto';
 
 @Controller()
 @ApiTags('COMMON')

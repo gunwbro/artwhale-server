@@ -9,8 +9,8 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { ErrorCode, ErrorMessage } from 'src/common/message-code';
 import { UserService } from 'src/api/user/user.service';
+import { ErrorCode, ErrorMessage } from 'src/common/types';
 
 export interface JwtRequest extends Request {
   user: {

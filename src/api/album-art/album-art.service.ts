@@ -1,6 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { FileType } from 'src/common/dto/file.dto';
-import { ErrorCode, ErrorMessage } from 'src/common/message-code';
+import { ErrorCode, ErrorMessage, FileType } from 'src/common/types';
 import { AlbumArts } from 'src/entities/AlbumArts';
 import { Files } from 'src/entities/Files';
 import { UsersAlbumArtsLikes } from 'src/entities/UsersAlbumArtsLikes';
