@@ -1,5 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { ErrorCode, ErrorMessage, FileType } from 'src/common/types';
+import { getFilePath } from 'src/common/util';
 import { Files } from 'src/entities/Files';
 import { Users } from 'src/entities/Users';
 import { DataSource } from 'typeorm';
@@ -86,7 +87,7 @@ export class UserService {
           .values([
             {
               originalName: file.filename,
-              path: '/profile/' + encodeURIComponent(file.filename),
+              path: getFilePath(FileType.PROFILE, file.filename),
               size: file.size,
               fileType: FileType.PROFILE,
               createdAt: new Date(),
@@ -126,7 +127,7 @@ export class UserService {
       .update(Files)
       .set({
         originalName: file.filename,
-        path: '/profile/' + encodeURIComponent(file.filename),
+        path: getFilePath(FileType.PROFILE, file.filename),
         size: file.size,
         updatedAt: new Date(),
       })

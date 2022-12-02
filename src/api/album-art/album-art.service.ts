@@ -1,5 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { ErrorCode, ErrorMessage, FileType } from 'src/common/types';
+import { getFilePath } from 'src/common/util';
 import { AlbumArts } from 'src/entities/AlbumArts';
 import { Files } from 'src/entities/Files';
 import { UsersAlbumArtsLikes } from 'src/entities/UsersAlbumArtsLikes';
@@ -107,7 +108,7 @@ export class AlbumArtService {
         .values([
           {
             originalName: filename,
-            path: '/album-art/' + encodeURIComponent(filename),
+            path: getFilePath(FileType.ALBUM_ART, filename),
             size,
             fileType: FileType.ALBUM_ART,
             createdAt: new Date(),

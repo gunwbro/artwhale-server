@@ -1,5 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { ErrorCode, ErrorMessage, FileType } from 'src/common/types';
+import { getFilePath } from 'src/common/util';
 import { Files } from 'src/entities/Files';
 import { Notices } from 'src/entities/Notices';
 import { DataSource } from 'typeorm';
@@ -33,7 +34,7 @@ export class NoticeService {
         .values([
           {
             originalName: filename,
-            path: '/notice/' + encodeURIComponent(filename),
+            path: getFilePath(FileType.NOTICE, filename),
             size,
             fileType: FileType.NOTICE,
             createdAt: new Date(),

@@ -8,6 +8,7 @@ import { Files } from 'src/entities/Files';
 import { UserService } from 'src/api/user/user.service';
 import { UsersMusicsLikes } from 'src/entities/UsersMusicsLikes';
 import { ErrorCode, ErrorMessage, FileType } from 'src/common/types';
+import { getFilePath } from 'src/common/util';
 
 @Injectable()
 export class MusicService {
@@ -129,7 +130,7 @@ export class MusicService {
         .values([
           {
             originalName: filename,
-            path: '/music/' + encodeURIComponent(filename),
+            path: getFilePath(FileType.MUSIC, filename),
             size,
             fileType: FileType.MUSIC,
             createdAt: new Date(),
