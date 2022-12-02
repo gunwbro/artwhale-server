@@ -26,10 +26,7 @@ import {
 import { JwtAuthGuard, JwtRequest } from 'src/api/auth/guard/jwt-auth.guard';
 import { IdDto } from 'src/common/dto/common.dto';
 import { multerAlbumArtOptions } from 'src/config/multer.options';
-import {
-  LogParameter,
-  ParseObjectToLoggerString,
-} from 'src/config/winston.config';
+import { LogParameter, ObjectJsonStringify } from 'src/config/winston.config';
 import { AlbumArtService } from './album-art.service';
 import {
   AlbumArtFileDto,
@@ -92,7 +89,7 @@ export class AlbumArtController {
     @UploadedFile() file: Express.Multer.File,
     @Body() body: AlbumArtFileDto,
   ) {
-    this.logger.log(ParseObjectToLoggerString(file), LogParameter.FILE);
+    this.logger.log(ObjectJsonStringify(file), LogParameter.FILE);
     return this.albumArtService.createAlbumArt(
       req.user.id,
       file,

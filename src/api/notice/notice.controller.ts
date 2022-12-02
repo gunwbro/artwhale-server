@@ -19,10 +19,7 @@ import {
 } from '@nestjs/swagger';
 import { IdDto } from 'src/common/dto/common.dto';
 import { multerNoticeOptions } from 'src/config/multer.options';
-import {
-  LogParameter,
-  ParseObjectToLoggerString,
-} from 'src/config/winston.config';
+import { LogParameter, ObjectJsonStringify } from 'src/config/winston.config';
 import { GetNoticeDto, NoticeFileDto } from './dto/notice.dto';
 import { NoticeService } from './notice.service';
 
@@ -62,7 +59,7 @@ export class NoticeController {
     @Body() bodyData: NoticeFileDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    this.logger.log(ParseObjectToLoggerString(image), LogParameter.FILE);
+    this.logger.log(ObjectJsonStringify(image), LogParameter.FILE);
     return this.noticeService.createNotice(bodyData, image);
   }
 }

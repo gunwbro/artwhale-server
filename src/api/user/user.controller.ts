@@ -25,10 +25,7 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard, JwtRequest } from 'src/api/auth/guard/jwt-auth.guard';
 import { multerUserProfileOptions } from 'src/config/multer.options';
-import {
-  LogParameter,
-  ParseObjectToLoggerString,
-} from 'src/config/winston.config';
+import { LogParameter, ObjectJsonStringify } from 'src/config/winston.config';
 import ImageDto from './dto/image.dto';
 import NicknameDto from './dto/nickname.dto';
 import { GetUserDto } from './dto/user.dto';
@@ -110,7 +107,7 @@ export class UserController {
     )
     file: Express.Multer.File,
   ) {
-    this.logger.log(ParseObjectToLoggerString(file), LogParameter.FILE);
+    this.logger.log(ObjectJsonStringify(file), LogParameter.FILE);
     return this.userService.patchUserImage(req.user.sub, file);
   }
 }

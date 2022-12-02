@@ -12,6 +12,7 @@ import { MusicModule } from './music/music.module';
 import { AlbumArtModule } from './album-art/album-art.module';
 import { MorganModule, MorganInterceptor } from 'nest-morgan';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LogParameter } from 'src/config/winston.config';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
       useClass: MorganInterceptor((tokens, req: any, res) => {
         Logger.log(
           [
+            req.user ? req.user.sub : '',
             tokens.method(req, res),
             tokens.url(req, res),
             tokens.status(req, res),
@@ -41,10 +43,9 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
             '-',
             tokens['response-time'](req, res),
             'ms',
-            '-',
             JSON.stringify(req.body),
           ].join(' '),
-          'Http Request',
+          LogParameter.HTTP_REQUEST,
         );
         return null;
       }),
